@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+COPY ["src/GestionUsuarios/GestionUsuarios.csproj", "src/GestionUsuarios/"]
+COPY ["test/GestionUsuariosTest/GestionUsuariosTest.csproj", "test/GestionUsuariosTest/"]
+
+RUN dotnet restore "src/GestionUsuarios/GestionUsuarios.csproj"
+RUN dotnet restore "test/GestionUsuariosTest/GestionUsuariosTest.csproj"
+
+COPY . .
+
+RUN dotnet build "src/GestionUsuarios/GestionUsuarios.csproj" -c Release -o /app/build
+RUN dotnet build "test/GestionUsuariosTest/GestionUsuariosTest.csproj" -c Release -o /app/test
+
+FROM build AS test
+WORKDIR /src
+ENTRYPOINT ["dotnet", "test", "test/GestionUsuariosTest/GestionUsuariosTest.csproj", "--configuration", "Release", "--logger", "console;verbosity=detailed"]

@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GestionUsuarios.WCF/GestionUsuarios.WCF.csproj" />
+    <Project Path="src/GestionUsuarios/GestionUsuarios.csproj" />
+  </Folder>
+</Solution>

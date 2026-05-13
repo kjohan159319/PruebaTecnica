@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – GestiónUsuarios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        magnetic: {
+                            bg: '#1a1a1a',
+                            card: '#252525',
+                            sidebar: '#171717',
+                            accent: '#156B52',
+                            'accent-light': '#1a8c68',
+                            border: '#3a3a3a',
+                            'border-subtle': '#2a2a2a',
+                            hover: '#2f2f2f',
+                            text: '#ECECF1',
+                            'text-secondary': '#B4B4B4',
+                            'text-muted': '#7A7A7A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Magnetic Theme Base */
+        * { box-sizing: border-box; }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #1a1a1a;
+            color: #ECECF1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #156B52;
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(37, 37, 37, 0.95) 0%, rgba(37, 37, 37, 0.8) 100%);
+            border: 1px solid rgba(58, 58, 58, 0.5);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(21, 107, 82, 0.4);
+            background: linear-gradient(135deg, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 100%);
+        }
+
+        /* Accent Line Top */
+        .accent-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 12%;
+            right: 12%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #156B52 50%, transparent 100%);
+            opacity: 0.6;
+        }
+
+        /* Input Minimal Style */
+        .input-magnetic {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid #3a3a3a;
+            color: #ECECF1;
+            transition: all 0.2s ease;
+        }
+        .input-magnetic:focus {
+            border-color: #4a4a4a;
+            box-shadow: 0 0 0 2px rgba(74, 74, 74, 0.3);
+            outline: none;
+        }
+
+        /* Button Magnetic */
+        .btn-magnetic {
+            background: #3a3a3a;
+            border: 1px solid #4a4a4a;
+            color: #ECECF1;
+            transition: all 0.2s ease;
+        }
+        .btn-magnetic:hover {
+            background: #4a4a4a;
+            border-color: #5a5a5a;
+        }
+
+        /* Sidebar Item Active */
+        .nav-item-active {
+            color: #ECECF1;
+        }
+
+        /* Glow Effect - Neutral */
+        .glow-accent {
+            box-shadow: 0 0 20px -4px rgba(74, 74, 74, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-magnetic-bg text-magnetic-text font-sans min-h-screen antialiased">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Magnetic -->
+        <aside class="w-60 bg-magnetic-sidebar border-r border-magnetic-border-subtle flex flex-col fixed h-full">
+            <div class="px-4 py-5 border-b border-magnetic-border-subtle">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-magnetic-border flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-magnetic-text tracking-tight">GestiónUsuarios</p>
+                        <p class="text-[10px] text-magnetic-text-muted uppercase tracking-wider">Magnetic Dashboard</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-3 py-4 space-y-1">
+                @{
+                    var currentPath = Context.Request.Path.Value ?? "";
+                    bool isTab1 = currentPath.StartsWith("/Usuario") && !currentPath.StartsWith("/UsuarioConsulta");
+                    bool isTab2 = currentPath.StartsWith("/UsuarioConsulta");
+                }
+
+                <a href="/Usuario"
+                   class="flex items-center gap-3 px-3 py-2 text-xs font-medium transition-colors @(isTab1 ? "text-magnetic-text" : "text-magnetic-text-secondary hover:text-magnetic-text")">
+                    <svg class="w-4 h-4 @(isTab1 ? "text-magnetic-text" : "text-magnetic-text-secondary")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    <span>Crear Usuario</span>
+                </a>
+
+                <a href="/UsuarioConsulta"
+                   class="flex items-center gap-3 px-3 py-2 text-xs font-medium transition-colors @(isTab2 ? "text-magnetic-text" : "text-magnetic-text-secondary hover:text-magnetic-text")">
+                    <svg class="w-4 h-4 @(isTab2 ? "text-magnetic-text" : "text-magnetic-text-secondary")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+            </nav>
+
+            <div class="px-4 py-4 border-t border-magnetic-border-subtle">
+                <div class="flex items-center gap-2 text-[10px] text-magnetic-text-muted">
+                    <div class="w-1.5 h-1.5 rounded-full bg-magnetic-text-muted animate-pulse"></div>
+                    Dark Mode v1.0
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="ml-60 flex-1 flex flex-col min-h-screen">
+            <!-- Header -->
+            <header class="bg-magnetic-bg/80 backdrop-blur-md border-b border-magnetic-border-subtle px-6 py-3 flex items-center justify-between sticky top-0 z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-magnetic-card border border-magnetic-border flex items-center justify-center">
+                        <svg class="w-4 h-4 text-magnetic-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-sm font-medium text-magnetic-text">@ViewData["Title"]</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-magnetic-card rounded-lg border border-magnetic-border">
+                        <div class="w-2 h-2 rounded-full bg-magnetic-text-secondary animate-pulse"></div>
+                        <span class="text-xs text-magnetic-text-secondary">Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="flex-1 p-5">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>

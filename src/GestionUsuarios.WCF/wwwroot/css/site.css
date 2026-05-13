@@ -1,0 +1,104 @@
+/* Magnetic Dashboard Theme Styles */
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
+}
+
+/* Glass Card Effect */
+.glass-card {
+    background: linear-gradient(135deg, rgba(37, 37, 37, 0.95) 0%, rgba(37, 37, 37, 0.8) 100%);
+    border: 1px solid rgba(58, 58, 58, 0.5);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(21, 107, 82, 0.4);
+}
+
+/* Accent Line Top Decoration - Neutral */
+.accent-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #4a4a4a 50%, transparent 100%);
+    opacity: 0.4;
+}
+
+/* Input Magnetic Style */
+.input-magnetic {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid #3a3a3a;
+    color: #ECECF1;
+    transition: all 0.2s ease;
+}
+
+.input-magnetic:focus {
+    border-color: #4a4a4a;
+    box-shadow: 0 0 0 2px rgba(74, 74, 74, 0.3);
+    outline: none;
+}
+
+.input-magnetic::placeholder {
+    color: #7A7A7A;
+}
+
+/* Button Magnetic */
+.btn-magnetic {
+    background: #3a3a3a;
+    border: 1px solid #4a4a4a;
+    color: #ECECF1;
+    transition: all 0.2s ease;
+}
+
+.btn-magnetic:hover {
+    background: #4a4a4a;
+    border-color: #5a5a5a;
+}
+
+/* Navigation Item Active */
+.nav-item-active {
+    background: rgba(21, 107, 82, 0.15);
+    border: 1px solid rgba(21, 107, 82, 0.3);
+    color: #ECECF1;
+}
+
+/* Tabular Numbers for Stats */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Focus States */
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid rgba(74, 74, 74, 0.5);
+    outline-offset: 2px;
+}
+
+/* Selection Color */
+::selection {
+    background: rgba(74, 74, 74, 0.4);
+    color: #ECECF1;
+}
